@@ -2,6 +2,7 @@
 import web
 from web import form
 import sys
+from mrc import get_an_example, any_input
 
 default_encoding = 'utf-8'
 if sys.getdefaultencoding() != default_encoding:
@@ -18,7 +19,6 @@ mrc_form = form.Form(
     form.Textarea("query", description="Query"),
     form.Textarea("passage", description="Passage"),
     form.Button("submit", type="submit", description="Submit"),
-    form.Textarea("answer", description="Answer"),
 )
 
 class index:
@@ -29,16 +29,22 @@ class mrc:
     def GET(self):
         f = mrc_form()
         get_value = web.input()
-        return render.mrc(f)
+        highlight_passage, highlight_answer = "", ""
+        return render.mrc(f, highlight_passage, highlight_answer)
 
     def POST(self):
         f = mrc_form()
-        post_value = web.input()
-        f['query'].value = post_value.query
-        f['passage'].value = post_value.passage
-        f['answer'].value = post_value.query
-        return render.mrc(f)
-
+        post_value = web.input(query=None, passage=None)
+        if hasattr(post_value, 'random'):
+            f['query'].value, f['passage'].value, highlight_passage, highlight_answer = get_an_example()
+            return render.mrc(f, highlight_passage, highlight_answer)
+        query, passage = post_value.query, post_value.passage
+        f['query'].value, f['passage'].value = query, passage
+        if query and passage:
+            _, _, highlight_passage, highlight_answer = any_input(query, passage)
+        else:
+            highlight_passage, highlight_answer = "", ""
+        return render.mrc(f, highlight_passage, highlight_answer)
 
 
 if __name__ == "__main__":
