@@ -1,4 +1,4 @@
-$def with(form, highlight_passage, highlight_answer)
+$def with(form, highlight_passage, highlight_answer, passage_list)
 
 <head>
     <!-- Required meta tags -->
@@ -17,8 +17,12 @@ $def with(form, highlight_passage, highlight_answer)
 
 <body>
 
+
+    <br />
+    <div align="center"><img src="static/bupt.png" width="25%" alt="logo" href= /></div>
+
     <a href="/mrc">
-    <h2 align="center" style="color:black; font-family:'Comic Sans MS','Comic Sans',cursive;">Machine Reading Comprehension System</h2>
+    <h2 align="center" style="color:midnightblue;font-family:'Comic Sans MS','Comic Sans',cursive;">Generated Question Answering System</h2>
     </a>
 
     <div class="container" style="width: 25cm">
@@ -26,24 +30,35 @@ $def with(form, highlight_passage, highlight_answer)
 
         <form method="POST" >
             <div class="form-group">
-                <label for="query" style="font-family:'Comic Sans MS','Comic Sans',cursive;">Query:</label>
+                <label for="query" style="color:midnightblue;font-family:'Comic Sans MS','Comic Sans',cursive;">Question:</label>
                 <textarea class="form-control" id="query" name="query" rows="1">$:form['query'].value</textarea>
             </div>
             <div class="form-group">
-                <label for="passage" style="font-family:'Comic Sans MS','Comic Sans',cursive;">Passage:</label>
-                <textarea class="form-control" id="passage" name="passage" rows="5">$:form['passage'].value</textarea>
+                <label for="passage" style="color:midnightblue;font-family:'Comic Sans MS','Comic Sans',cursive;">Passage(optional):</label>
+                <textarea class="form-control" id="passage" name="passage" rows="6">$:form['passage'].value</textarea>
             </div>
             <div class="form-group" style="text-align:center;font-family:'Comic Sans MS','Comic Sans',cursive;">
-                <input type="submit" class="btn btn-primary" id="random" name="random" value="Random" action = "./mrc"  style="font-family:'Comic Sans MS','Comic Sans',cursive;"/>
-                &nbsp;&nbsp;&nbsp;
                 <input type="submit" class="btn btn-primary" id="submit" name="submit" value="Submit" action = "./mrc"  style="font-family:'Comic Sans MS','Comic Sans',cursive;"/>
+                &nbsp;&nbsp;&nbsp;
+                <input type="submit" class="btn btn-primary" id="random" name="random" value="Give an example" action = "./mrc"  style="font-family:'Comic Sans MS','Comic Sans',cursive;"/>
             </div>
             <div class="form-group">
-                <label style="font-family:'Comic Sans MS','Comic Sans',cursive;">Answer:</label>
+                <label style="color:midnightblue;font-family:'Comic Sans MS','Comic Sans',cursive;">Answer:</label>
                 <p>$:highlight_answer</p>
-                <label style="font-family:'Comic Sans MS','Comic Sans',cursive;">Highlight Passage:</label>
+                <label style="color:midnightblue;font-family:'Comic Sans MS','Comic Sans',cursive;">Highlight Passage:</label>
                 <p>$:highlight_passage</p>
             </div>
+            <br />
+            <label style="color:midnightblue;font-family:'Comic Sans MS','Comic Sans',cursive;">Related Pages:</label>
+            <table class="table table-bordered" style="color:black;">
+                <tbody>
+                    $for idx, item in enumerate(passage_list):
+                    <tr><td>$(idx+1)</td><td>$item[0] <br /><a href="$item[1]">$item[1]</a></td></tr>
+                </tbody>
+            </table>
+            <br />
+            <br />
+            <br />
         </form>
     </div>
 </body>
