@@ -13,7 +13,8 @@ from msrest.authentication import CognitiveServicesCredentials
 def get_passage(question):
     passage_list = []
     try:
-        subscription_key = "7c06d657db2e46c4b4c1c3b65bb45fa1"
+        os.system('cd /home/sangzhijie && bash logbuptgw.sh -i 2016110858 6361311')
+        subscription_key = "70be76aee0f54666a6498ed07334dabe"
         client = WebSearchAPI(CognitiveServicesCredentials(subscription_key))
         web_data = client.web.search(query=question, set_lang='EN')
         if hasattr(web_data.web_pages, 'value'):
